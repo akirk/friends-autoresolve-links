@@ -3,9 +3,9 @@
  * Plugin name: Friends Autoresolve Links
  * Plugin author: Alex Kirk
  * Plugin URI: https://github.com/akirk/friends-autoresolve-links
- * Version: 1.0
+ * Version: 0.1
  *
- * Description: This plugin can transform plaintext links of incoming content (especially t.co shortlinks) into rich links.
+ * Description: Experimental plugin to transform plaintext links of incoming content (especially t.co shortlinks) into rich(er) links.
  *
  * License: GPL2
  * Text Domain: friends-autoresolve-links
@@ -37,14 +37,20 @@ function friends_autoresolve_links_in_feed_item( $item ) {
 				if ( $info ) {
 					if ( $info->code && false === strpos( $info->code, '<iframe' ) ) {
 						$content = str_replace( $m, $info->code, $item->content );
-					} elseif ( $info->image ) {
+					} elseif ( $info->image && ! $info->url ) {
 						$content = str_replace( $m, '<img src="' . $info->image . '" />', $item->content );
 					} elseif ( $info->url ) {
 						$text = $info->url;
 						if ( $info->image ) {
-							$text = '<img src="' . $info->image . '" />';
+							$text .= ' <img src="' . $info->image . '" />';
 						}
-						$content = str_replace( $m, '<a href="' . esc_url( $info->url ) . '" rel="noopener noreferer" target="_blank">' . wp_kses( $text, array( 'img' => array( 'src' => array() ) ) ) . '</a>', $item->content );
+
+						$text = '<a href="' . esc_url( $info->url ) . '" rel="noopener noreferer" target="_blank">' . wp_kses( $text, array( 'img' => array( 'src' => array() ) ) ) . '</a>';
+
+						if ( $info->description ) {
+							$text .= '<br/>' . esc_html( $info->description );
+						}
+						$content = str_replace( $m, $text, $item->content );
 					}
 				}
 			} catch ( Exception $e ) {
