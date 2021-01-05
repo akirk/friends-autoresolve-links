@@ -61,6 +61,19 @@ function friends_autoresolve_links_in_feed_item( $item ) {
 	return $item;
 }
 
+add_action( 'friends_entry_dropdown_menu', function() {
+	if ( apply_filters( 'friends_debug', false ) ) {
+		?><li class="menu-item"><a href="#" data-id="<?php echo esc_attr( get_the_ID() ); ?>" class="friends-re-resolve">Re-resolve</a></li><?php
+	}
+} );
+
+add_action( 'wp_enqueue_scripts', function() {
+	if ( is_user_logged_in() ) {
+		wp_enqueue_script( 'friends-autoresolve-links', plugins_url( 'friends-autoresolve-links.js', __FILE__ ), array( 'friends' ), 1.0 );
+	}
+} );
+
+
 add_action( 'wp_ajax_re-resolve-post', function() {
 	$post = get_post( $_POST['id'] );
 	$item = friends_autoresolve_links_in_feed_item( (object) array(
