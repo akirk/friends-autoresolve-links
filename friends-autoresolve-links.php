@@ -21,11 +21,7 @@
 require 'vendor/autoload.php';
 
 function friends_autoresolve_links_in_feed_item( $item ) {
-	static $count = 10;
-	if ( --$count < 0 ) {
-		return $item;
-	}
-	preg_match_all( '#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $item->content, $matches );
+	preg_match_all( '#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', strip_tags( str_replace( '>', '>' . PHP_EOL, $item->content ) ), $matches );
 
 	if ( ! empty( $matches[0] ) ) {
 		$embed = new \Embed\Embed();
