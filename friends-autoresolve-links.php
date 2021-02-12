@@ -18,6 +18,7 @@
  * This file contains the main plugin functionality.
  */
 
+defined( 'ABSPATH' ) || exit;
 require 'vendor/autoload.php';
 
 function friends_autoresolve_links_embed_tokens() {
@@ -211,7 +212,7 @@ add_action(
 	function() {
 		if ( apply_filters( 'friends_debug', false ) ) {
 			?>
-		<li class="menu-item"><a href="#" data-id="<?php echo esc_attr( get_the_ID() ); ?>" class="friends-re-resolve">Re-resolve</a></li>
+		<li class="menu-item"><a href="#" data-id="<?php echo esc_attr( get_the_ID() ); ?>" class="friends-re-resolve"><?php esc_html_e( 'Re-resolve', 'friends-autoresolve-links' ); ?></a></li>
 			<?php
 		}
 	}
@@ -237,7 +238,7 @@ add_action(
 				__( 'Plugin: Autoresolve Links', 'friends-autoresolve-links' ),
 				__( 'Plugin: Autoresolve Links', 'friends-autoresolve-links' ),
 				'administrator',
-				'friends-rss-bridge',
+				'friends-autoresolve-links',
 				'friends_autoresolve_links_about_page'
 			);
 		} else {
