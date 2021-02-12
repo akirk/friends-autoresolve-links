@@ -3,7 +3,7 @@
  * Plugin name: Friends Autoresolve Links
  * Plugin author: Alex Kirk
  * Plugin URI: https://github.com/akirk/friends-autoresolve-links
- * Version: 0.1
+ * Version: 1.0
  *
  * Description: Experimental plugin to transform plaintext links of incoming content (especially t.co shortlinks) into rich(er) links.
  *
@@ -58,7 +58,8 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 						<fieldset>
 							<label for="allow_iframes">
 								<input name="allow_iframes" type="checkbox" id="allow_iframes" value="1" <?php checked( get_option( 'friends-autoresolve-links_allow_iframes' ) ); ?> />
-								<?php _e( "Use iframes to embed remote content (e.g. Youtube videos)." ); ?>							</label>
+								<?php _e( "Use iframes to embed remote content (e.g. Youtube videos)." ); ?>
+							</label>
 						</fieldset>
 					</td>
 				</tr>
@@ -68,7 +69,7 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 						<td>
 							<fieldset>
 								<label for="<?php echo sanitize_title( $key ); ?>">
-									<input name="<?php echo esc_attr( $key ); ?>" type="text" id="<?php echo sanitize_title( $key ); ?>" value="<?php echo esc_html( $value ); ?>" />
+									<input name="<?php echo esc_attr( $key ); ?>" type="text" id="<?php echo sanitize_title( $key ); ?>" value="<?php echo esc_html( $value ); ?>"  placeholder="<?php esc_html_e( "Leave empty if you don't have one", 'friends-autoresolve-links' ); ?>" size="60" />
 								</label>
 							</fieldset>
 						</td>
@@ -101,8 +102,8 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 	<p>
 	<?php
 	echo wp_kses(
-		// translators: %s: URL to the RSS Bridge.
-		sprintf( __( 'This parser is powered by the open source project <a href=%s>Embed</a> and provides support to parse the following properties:', 'friends-autoresolve-links' ), '"https://github.com/oscarotero/Embed" target="_blank" rel="noopener noreferrer"' ),
+		// translators: %s: URL to the Embed library.
+		sprintf( __( 'This plugin is largely powered by the open source project <a href=%s>Embed</a> and provides support to resolve links to the following domains:', 'friends-autoresolve-links' ), '"https://github.com/oscarotero/Embed" target="_blank" rel="noopener noreferrer"' ),
 		array(
 			'a' => array(
 				'href'   => array(),
