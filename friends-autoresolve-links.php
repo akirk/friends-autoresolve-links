@@ -3,13 +3,12 @@
  * Plugin name: Friends Autoresolve Links
  * Plugin author: Alex Kirk
  * Plugin URI: https://github.com/akirk/friends-autoresolve-links
- * Version: 1.0
+ * Version: 1.0.1
  *
  * Description: Experimental plugin to transform plaintext links of incoming content (especially t.co shortlinks) into rich(er) links.
  *
  * License: GPL2
- * Text Domain: friends-autoresolve-links
- * Domain Path: /languages/
+ * Text Domain: friends
  *
  * @package Friends_Autoresolve_Links
  */
@@ -47,14 +46,14 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 		}
 	}
 
-	?><h1><?php _e( 'Friends Autoresolve Links', 'friends-autoresolve-links' ); ?></h1>
+	?><h1><?php _e( 'Friends Autoresolve Links', 'friends' ); ?></h1>
 
 	<form method="post">
 		<?php wp_nonce_field( $nonce_value ); ?>
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Allow iframes', 'friends-autoresolve-links' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Allow iframes', 'friends' ); ?></th>
 					<td>
 						<fieldset>
 							<label for="allow_iframes">
@@ -70,7 +69,7 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 						<td>
 							<fieldset>
 								<label for="<?php echo sanitize_title( $key ); ?>">
-									<input name="<?php echo esc_attr( $key ); ?>" type="text" id="<?php echo sanitize_title( $key ); ?>" value="<?php echo esc_html( $value ); ?>"  placeholder="<?php esc_html_e( "Leave empty if you don't have one", 'friends-autoresolve-links' ); ?>" size="60" />
+									<input name="<?php echo esc_attr( $key ); ?>" type="text" id="<?php echo sanitize_title( $key ); ?>" value="<?php echo esc_html( $value ); ?>"  placeholder="<?php esc_html_e( "Leave empty if you don't have one", 'friends' ); ?>" size="60" />
 								</label>
 							</fieldset>
 						</td>
@@ -79,7 +78,7 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 			</tbody>
 		</table>
 		<p class="submit">
-			<input type="submit" id="submit" class="button button-primary" value="<?php esc_html_e( 'Save Changes', 'friends-autoresolve-links' ); ?>">
+			<input type="submit" id="submit" class="button button-primary" value="<?php esc_html_e( 'Save Changes', 'friends' ); ?>">
 		</p>
 	</form>
 
@@ -88,7 +87,7 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 			<?php
 			echo wp_kses(
 				// translators: %s: URL to the Friends Plugin page on WordPress.org.
-				sprintf( __( 'The Friends plugin is all about connecting with friends and news. Learn more on its <a href=%s>plugin page on WordPress.org</a>.', 'friends-autoresolve-links' ), '"https://wordpress.org/plugins/friends" target="_blank" rel="noopener noreferrer"' ),
+				sprintf( __( 'The Friends plugin is all about connecting with friends and news. Learn more on its <a href=%s>plugin page on WordPress.org</a>.', 'friends' ), '"https://wordpress.org/plugins/friends" target="_blank" rel="noopener noreferrer"' ),
 				array(
 					'a' => array(
 						'href'   => array(),
@@ -104,7 +103,7 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 	<?php
 	echo wp_kses(
 		// translators: %s: URL to the Embed library.
-		sprintf( __( 'This plugin is largely powered by the open source project <a href=%s>Embed</a> and provides support to resolve links to the following domains:', 'friends-autoresolve-links' ), '"https://github.com/oscarotero/Embed" target="_blank" rel="noopener noreferrer"' ),
+		sprintf( __( 'This plugin is largely powered by the open source project <a href=%s>Embed</a> and provides support to resolve links to the following domains:', 'friends' ), '"https://github.com/oscarotero/Embed" target="_blank" rel="noopener noreferrer"' ),
 		array(
 			'a' => array(
 				'href'   => array(),
@@ -212,7 +211,7 @@ add_action(
 	function() {
 		if ( apply_filters( 'friends_debug', false ) ) {
 			?>
-		<li class="menu-item"><a href="#" data-id="<?php echo esc_attr( get_the_ID() ); ?>" class="friends-re-resolve"><?php esc_html_e( 'Re-resolve', 'friends-autoresolve-links' ); ?></a></li>
+		<li class="menu-item"><a href="#" data-id="<?php echo esc_attr( get_the_ID() ); ?>" class="friends-re-resolve"><?php esc_html_e( 'Re-resolve', 'friends' ); ?></a></li>
 			<?php
 		}
 	}
@@ -235,18 +234,18 @@ add_action(
 		if ( $friends_settings_exist ) {
 			add_submenu_page(
 				'friends-settings',
-				__( 'Plugin: Autoresolve Links', 'friends-autoresolve-links' ),
-				__( 'Plugin: Autoresolve Links', 'friends-autoresolve-links' ),
+				__( 'Autoresolve Links', 'friends' ),
+				__( 'Autoresolve Links', 'friends' ),
 				'administrator',
 				'friends-autoresolve-links',
 				'friends_autoresolve_links_about_page'
 			);
 		} else {
-			add_menu_page( 'friends', __( 'Friends', 'friends-autoresolve-links' ), 'administrator', 'friends-settings', null, 'dashicons-groups', 3.73 );
+			add_menu_page( 'friends', __( 'Friends', 'friends' ), 'administrator', 'friends-settings', null, 'dashicons-groups', 3.73 );
 			add_submenu_page(
 				'friends-settings',
-				__( 'About', 'friends-autoresolve-links' ),
-				__( 'About', 'friends-autoresolve-links' ),
+				__( 'About', 'friends' ),
+				__( 'About', 'friends' ),
 				'administrator',
 				'friends-settings',
 				'friends_autoresolve_links_about_page_with_friends_about'
