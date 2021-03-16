@@ -58,7 +58,7 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 						<fieldset>
 							<label for="allow_iframes">
 								<input name="allow_iframes" type="checkbox" id="allow_iframes" value="1" <?php checked( get_option( 'friends-autoresolve-links_allow_iframes' ) ); ?> />
-								<?php _e( "Use iframes to embed remote content (e.g. Youtube videos)." ); ?>
+								<?php _e( "Use iframes to embed remote content (e.g. Youtube videos).", 'friends' ); ?>
 							</label>
 						</fieldset>
 					</td>
@@ -69,7 +69,7 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 						<td>
 							<fieldset>
 								<label for="<?php echo sanitize_title( $key ); ?>">
-									<input name="<?php echo esc_attr( $key ); ?>" type="text" id="<?php echo sanitize_title( $key ); ?>" value="<?php echo esc_html( $value ); ?>"  placeholder="<?php esc_html_e( "Leave empty if you don't have one", 'friends' ); ?>" size="60" />
+									<input name="<?php echo esc_attr( $key ); ?>" type="text" id="<?php echo sanitize_title( $key ); ?>" value="<?php echo esc_html( $value ); ?>"  placeholder="<?php /* translators: Placeholder for a field where a token can be entered. */ esc_html_e( "Leave empty if you don't have one", 'friends' ); ?>" size="60" />
 								</label>
 							</fieldset>
 						</td>
