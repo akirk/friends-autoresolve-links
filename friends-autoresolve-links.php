@@ -220,7 +220,7 @@ add_action(
 add_action(
 	'wp_enqueue_scripts',
 	function() {
-		if ( is_user_logged_in() ) {
+		if ( is_user_logged_in() && class_exists( 'Friends' ) && Friends::on_frontend() ) {
 			wp_enqueue_script( 'friends-autoresolve-links', plugins_url( 'friends-autoresolve-links.js', __FILE__ ), array( 'friends' ), 1.0 );
 		}
 	}
