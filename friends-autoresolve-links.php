@@ -153,7 +153,13 @@ function friends_autoresolve_links_in_feed_item( $item ) {
 		return $item;
 	}
 
-	preg_match_all( '#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', strip_tags( str_replace( '>', '>' . PHP_EOL, $item->post_content ) ), $matches );
+	$url_regex = 'https?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))';
+
+	$stripped_post_content = $item->post_content;
+	$stripped_post_content = preg_replace( '#>\s*' . $url_regex . '<#', '><', $stripped_post_content );
+	$stripped_post_content = strip_tags( str_replace( '>', '>' . PHP_EOL, $stripped_post_content ) );
+
+	preg_match_all( '#\b' . $url_regex . '#', $stripped_post_content, $matches );
 
 	if ( ! empty( $matches[0] ) ) {
 		$embed = new \Embed\Embed();
