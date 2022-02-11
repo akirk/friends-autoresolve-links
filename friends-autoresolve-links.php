@@ -3,7 +3,7 @@
  * Plugin name: Friends Autoresolve Links
  * Plugin author: Alex Kirk
  * Plugin URI: https://github.com/akirk/friends-autoresolve-links
- * Version: 1.0.1
+ * Version: 1.0.2
  *
  * Description: Experimental plugin to transform plaintext links of incoming content (especially t.co shortlinks) into rich(er) links.
  *
@@ -226,7 +226,7 @@ add_action(
 add_action(
 	'wp_enqueue_scripts',
 	function() {
-		if ( is_user_logged_in() && class_exists( 'Friends' ) && Friends::on_frontend() ) {
+		if ( is_user_logged_in() && class_exists( 'Friends\Friends' ) && Friends\Friends::on_frontend() ) {
 			wp_enqueue_script( 'friends-autoresolve-links', plugins_url( 'friends-autoresolve-links.js', __FILE__ ), array( 'friends' ), 1.0 );
 		}
 	}
@@ -266,7 +266,7 @@ add_action(
 	function() {
 		$post = (array) get_post( $_POST['id'] );
 		$post['_is_new'] = true;
-		$item = friends_autoresolve_links_in_feed_item( new Friends_Feed_Item( $post ) );
+		$item = friends_autoresolve_links_in_feed_item( new Friends\Feed_Item( $post ) );
 		if ( ! is_array( $item->_feed_rule_transform ) ) {
 			wp_send_json_error( 'no-change' );
 		}
