@@ -3,7 +3,7 @@
  * Plugin name: Friends Autoresolve Links
  * Plugin author: Alex Kirk
  * Plugin URI: https://github.com/akirk/friends-autoresolve-links
- * Version: 1.0.2
+ * Version: 1.1.0
  *
  * Description: Experimental plugin to transform plaintext links of incoming content (especially t.co shortlinks) into rich(er) links.
  *
@@ -22,7 +22,7 @@ require 'vendor/autoload.php';
 
 function friends_autoresolve_links_embed_tokens() {
 	return array(
-		'facebook:token' => 'friends-autoresolve-links_facebook_token',
+		'facebook:token'  => 'friends-autoresolve-links_facebook_token',
 		'instagram:token' => 'friends-autoresolve-links_instagram_token',
 	);
 }
@@ -38,10 +38,10 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 	if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], $nonce_value ) ) {
 		update_option( 'friends-autoresolve-links_allow_iframes', isset( $_POST['allow_iframes'] ) ? boolval( $_POST['allow_iframes'] ) : false );
 		foreach ( friends_autoresolve_links_embed_tokens() as $key => $option ) {
-			if ( empty( $_POST[$key] ) ) {
-				update_option( $option, $_POST[$key] );
+			if ( empty( $_POST[ $key ] ) ) {
+				update_option( $option, $_POST[ $key ] );
 			} else {
-				update_option( $option, $_POST[$key] );
+				update_option( $option, $_POST[ $key ] );
 			}
 		}
 	}
@@ -58,7 +58,7 @@ function friends_autoresolve_links_about_page( $display_about_friends = false ) 
 						<fieldset>
 							<label for="allow_iframes">
 								<input name="allow_iframes" type="checkbox" id="allow_iframes" value="1" <?php checked( get_option( 'friends-autoresolve-links_allow_iframes' ) ); ?> />
-								<?php _e( "Use iframes to embed remote content (e.g. Youtube videos).", 'friends' ); ?>
+								<?php _e( 'Use iframes to embed remote content (e.g. Youtube videos).', 'friends' ); ?>
 							</label>
 						</fieldset>
 					</td>
