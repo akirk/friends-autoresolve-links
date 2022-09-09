@@ -236,10 +236,10 @@ add_action(
 	'admin_menu',
 	function () {
 		// Only show the menu if installed standalone.
-		$friends_settings_exist = '' !== menu_page_url( 'friends-settings', false );
+		$friends_settings_exist = '' !== menu_page_url( 'friends', false );
 		if ( $friends_settings_exist ) {
 			add_submenu_page(
-				'friends-settings',
+				'friends',
 				__( 'Autoresolve Links', 'friends' ),
 				__( 'Autoresolve Links', 'friends' ),
 				'administrator',
@@ -247,13 +247,13 @@ add_action(
 				'friends_autoresolve_links_about_page'
 			);
 		} else {
-			add_menu_page( 'friends', __( 'Friends', 'friends' ), 'administrator', 'friends-settings', null, 'dashicons-groups', 3 );
+			add_menu_page( 'friends', __( 'Friends', 'friends' ), 'administrator', 'friends', null, 'dashicons-groups', 3 );
 			add_submenu_page(
-				'friends-settings',
+				'friends',
 				__( 'About', 'friends' ),
 				__( 'About', 'friends' ),
 				'administrator',
-				'friends-settings',
+				'friends',
 				'friends_autoresolve_links_about_page_with_friends_about'
 			);
 		}
