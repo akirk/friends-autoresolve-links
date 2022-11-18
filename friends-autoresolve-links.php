@@ -4,6 +4,7 @@
  * Plugin author: Alex Kirk
  * Plugin URI: https://github.com/akirk/friends-autoresolve-links
  * Version: 1.1.0
+ * Requires Plugins: friends
  *
  * Description: Experimental plugin to transform plaintext links of incoming content (especially t.co shortlinks) into rich(er) links.
  *
@@ -153,12 +154,18 @@ function friends_autoresolve_links_in_feed_item( $item ) {
 		return $item;
 	}
 
+	$content = $item->post_content;
+
+	$protected_tags = array();
+	$protected_post_content = preg_replace_callback( '#<a href=[^>]+>.*?</a>#i', function( $m ) use ( &$protected_tags ) {
+		$c = count( $protected_tags );
+		$protect = '!#!#PROTECT' . $c . '#!#!';
+		$protected_tags[ $protect ] = $m[0];
+		return $protect;
+	}, $content );
+	$stripped_post_content = strip_tags( $protected_post_content );
+
 	$url_regex = 'https?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))';
-
-	$stripped_post_content = $item->post_content;
-	$stripped_post_content = preg_replace( '#>\s*' . $url_regex . '<#', '><', $stripped_post_content );
-	$stripped_post_content = strip_tags( str_replace( '>', '>' . PHP_EOL, $stripped_post_content ) );
-
 	preg_match_all( '#\b' . $url_regex . '#', $stripped_post_content, $matches );
 
 	if ( ! empty( $matches[0] ) ) {
@@ -171,14 +178,12 @@ function friends_autoresolve_links_in_feed_item( $item ) {
 				array_map( 'get_option', friends_autoresolve_links_embed_tokens() )
 			)
 		);
-		$content = false;
+		$content = $protected_post_content;
 
 		foreach ( $matches[0] as $m ) {
 			try {
 				$info = $embed->get( $m );
 				if ( $info ) {
-					$content = str_replace( '<a class="auto-link" href="' . $m . '">' . $m . '</a>', $m, $item->post_content );
-
 					if ( $info->code && ( get_option( 'friends-autoresolve-links_allow_iframes' ) || false === strpos( $info->code, '<iframe' ) ) ) {
 						$content = str_replace( $m, $info->code, $content );
 					} elseif ( $info->image && ! $info->url ) {
@@ -189,12 +194,11 @@ function friends_autoresolve_links_in_feed_item( $item ) {
 							$text .= ' <img src="' . $info->image . '" />';
 						}
 
-						$text = '<a href="' . esc_url( $info->url ) . '" rel="noopener noreferer" target="_blank">' . wp_kses( $text, array( 'img' => array( 'src' => array() ) ) ) . '</a>';
+						$text = '<a\s+href="' . esc_url( $info->url ) . '" rel="noopener noreferer" target="_blank">' . wp_kses( $text, array( 'img' => array( 'src' => array() ) ) ) . '</a>';
 
 						if ( $info->description ) {
 							$text .= '<br/>' . esc_html( $info->description );
 						}
-						$content = str_replace( '<a class="auto-link" href="' . $m . '">' . $m . '</a>', $m, $content );
 						$content = str_replace( $m, $text, $content );
 					}
 				}
@@ -203,6 +207,7 @@ function friends_autoresolve_links_in_feed_item( $item ) {
 			}
 		}
 
+		$content = str_replace( array_keys( $protected_tags ), array_values( $protected_tags ), $content );
 		if ( $content ) {
 			$item->_feed_rule_transform = array(
 				'post_content' => $content,
